@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "outDir": "dist",
+        "noImplicitAny": true,
+        "preserveConstEnums": true,
+        "sourceMap": true,
+        "target": "ES2016",
+        "downlevelIteration": true,
+        "module": "CommonJS",
+        "lib": ["ES2016"],
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "moduleResolution": "Node",
+        "esModuleInterop": true
+    }
+}

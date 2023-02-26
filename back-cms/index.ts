@@ -2,11 +2,11 @@ import express, { Request, Response, json, urlencoded } from 'express';
 import cors from 'cors';
 import 'express-async-errors';
 import { rateLimit } from 'express-rate-limit';
-require('dotenv').config()
+require('dotenv').config({path: '../.env'})
 const app = express();
 
-
-const PORT = process.env.PORT_BACK;
+const PORT = process.env.PORT_BACK; 
+const HOST = process.env.HOST_BACK; 
 
 const limiter = rateLimit({
     windowMs: 5 * 60 * 1000,
@@ -35,5 +35,5 @@ app.get('/', async (req: Request, res: Response) => {
 
 
 app.listen(Number(PORT), '0.0.0.0', () => {
-    console.log(`Listening on: http://localhost:${PORT}`)
+    console.log(`Listening on: ${HOST}:${PORT}`)
 })

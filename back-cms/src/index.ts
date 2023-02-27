@@ -2,11 +2,22 @@ import express, { Request, Response, json, urlencoded } from 'express';
 import cors from 'cors';
 import 'express-async-errors';
 import { rateLimit } from 'express-rate-limit';
-require('dotenv').config({path: '../.env'})
+import { AppDataSource } from './data-source';
+import { postRouter } from './routes/post.router';
+require('dotenv').config({ path: '../.env' })
 const app = express();
 
-const PORT = process.env.PORT_BACK; 
-const HOST = process.env.HOST_BACK; 
+const PORT = process.env.PORT_BACK;
+const HOST = process.env.HOST_BACK;
+
+AppDataSource
+    .initialize()
+    .then(() => {
+        console.log("Data Source has been initialized!")
+    })
+    .catch((err) => {
+        console.error("Error during Data Source initialization:", err)
+    })
 
 const limiter = rateLimit({
     windowMs: 5 * 60 * 1000,
@@ -22,17 +33,16 @@ app.use(cors({
 
 app.disable('x-powered-by');
 app.use(json());
-app.use(urlencoded({extended: true}));
+app.use(urlencoded({ extended: true }));
 
 
 app.get('/', async (req: Request, res: Response) => {
-
-    res.json([
-        {message: "ok"}
-    ])
+    res.json([{
+        message: 'Home'
+    }])
 });
 
-
+app.use('/post', postRouter);
 
 app.listen(Number(PORT), '0.0.0.0', () => {
     console.log(`Listening on: ${HOST}:${PORT}`)

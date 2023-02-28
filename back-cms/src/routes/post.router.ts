@@ -6,14 +6,18 @@ import { Post } from "../entity/posts";
 
 export const postRouter = Router()
 .get('/', async (req: Request, res: Response) => {
-    const page = 1;
+
+    const page: number = req.query.page ? Number(req.query.page) : 1
+
+    console.log(page)
+    const take = 3
     const posts = await AppDataSource.manager
     .getRepository(Post)
     .createQueryBuilder("post")
     .select(["post.id", "post.title", "post.summary"])
     .orderBy("post.id", "DESC")
-    .take(10)
-    .skip(0)
+    .take(take)
+    .skip((page - 1) * take )
     .getMany()
     res.json(posts)
 })

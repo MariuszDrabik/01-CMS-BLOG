@@ -1,29 +1,31 @@
-import { Request, Response, Router } from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import { AppDataSource } from "../data-source";
-import { Post } from "../entity/posts";
+import { Post } from "../entity/Posts";
+import { PostController } from "../controller/PostsController";
 
 
 
 export const postRouter = Router()
-.get('/', async (req: Request, res: Response) => {
+.get('/', async (req: Request, res: Response, next: NextFunction) => {
 
-    const page: number = req.query.page ? Number(req.query.page) : 1
+    const posts = await new PostController().all(req, res, next)
+    // const page: number = req.query.page ? Number(req.query.page) : 1
 
-    console.log(page)
-    const take = 3
-    const posts = await AppDataSource.manager
-    .getRepository(Post)
-    .createQueryBuilder("post")
-    .select(["post.id", "post.title", "post.summary"])
-    .orderBy("post.id", "DESC")
-    .take(take)
-    .skip((page - 1) * take )
-    .getMany()
+    // console.log(page)
+    // const take = 3
+    // const posts = await AppDataSource.manager
+    // .getRepository(Post)
+    // .createQueryBuilder("post")
+    // .select(["post.id", "post.title", "post.summary"])
+    // .orderBy("post.id", "DESC")
+    // .take(take)
+    // .skip((page - 1) * take )
+    // .getMany()
     res.json(posts)
 })
 
 .get('/search/:name?', async (req: Request, res: Response) => {
-    const {name} = req.params 
+    const {name} = req.params
     const posts = await AppDataSource.manager.find(Post)
     res.json(posts)
 })

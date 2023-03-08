@@ -1,5 +1,5 @@
 import { DataSource } from "typeorm";
-import { Post, Tag } from "./entity/Posts";
+import { Post, Tag } from "../entity/Posts";
 
 require('dotenv').config({path: '../.env'});
 

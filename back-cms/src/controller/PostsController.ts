@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { AppDataSource } from "../data-source";
+import { AppDataSource } from "../database/data-source";
 import { Post } from "../entity/Posts";
 
 export class PostController {

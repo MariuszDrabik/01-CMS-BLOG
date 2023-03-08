@@ -2,10 +2,13 @@ import express, { Request, Response, json, urlencoded } from 'express';
 import cors from 'cors';
 import 'express-async-errors';
 import { rateLimit } from 'express-rate-limit';
-import { AppDataSource } from './data-source';
+import { AppDataSource } from './database/data-source';
 import { postRouter } from './routes/post.router';
+import bodyParser from 'body-parser';
 require('dotenv').config({ path: '../.env' })
 const app = express();
+
+app.use(bodyParser.json());
 
 const PORT = process.env.PORT_BACK;
 const HOST = process.env.HOST_BACK;
@@ -14,6 +17,7 @@ AppDataSource
     .initialize()
     .then(() => {
         console.log("Data Source has been initialized!")
+
     })
     .catch((err) => {
         console.error("Error during Data Source initialization:", err)
@@ -31,6 +35,7 @@ app.use(cors({
     origin: 'http://localhost:3000'
 }));
 
+
 app.disable('x-powered-by');
 app.use(json());
 app.use(urlencoded({ extended: true }));
@@ -42,7 +47,9 @@ app.get('/', async (req: Request, res: Response) => {
     }])
 });
 
-app.use('/post', postRouter);
+app.use('/posts', postRouter);
+
+
 
 app.listen(Number(PORT), '0.0.0.0', () => {
     console.log(`Listening on: ${HOST}:${PORT}`)

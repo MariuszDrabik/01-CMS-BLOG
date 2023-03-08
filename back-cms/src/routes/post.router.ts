@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
-import { AppDataSource } from "../data-source";
+import { AppDataSource } from "../database/data-source";
 import { Post } from "../entity/Posts";
 import { PostController } from "../controller/PostsController";
 
@@ -9,18 +9,6 @@ export const postRouter = Router()
 .get('/', async (req: Request, res: Response, next: NextFunction) => {
 
     const posts = await new PostController().all(req, res, next)
-    // const page: number = req.query.page ? Number(req.query.page) : 1
-
-    // console.log(page)
-    // const take = 3
-    // const posts = await AppDataSource.manager
-    // .getRepository(Post)
-    // .createQueryBuilder("post")
-    // .select(["post.id", "post.title", "post.summary"])
-    // .orderBy("post.id", "DESC")
-    // .take(take)
-    // .skip((page - 1) * take )
-    // .getMany()
     res.json(posts)
 })
 
@@ -35,5 +23,57 @@ export const postRouter = Router()
 })
 
 .post('/', async (req, res, next) => {
-
+    res.json(req.body)
 })
+
+const authentication = (req: Request, res: Response, next: Function) => {
+    console.log(req);
+    next();
+    return
+    res.json({
+        message: 'You have shall not pass'
+    })
+};
+
+// export const Routes2 = [{
+//     method: "get",
+//     route: "/users",
+//     controller: PostController,
+//     action: "all"
+// }, {
+//     method: "get",
+//     route: "/users/:id",
+//     controller: PostController,
+//     action: "one"
+// }, {
+//     method: "post",
+//     route: "/users",
+//     auth: authentication,
+//     controller: PostController,
+//     action: "save"
+// }, {
+//     method: "delete", route: "/users/:id", controller: PostController,
+//     auth: authentication,
+//     action: "remove"
+// }];
+
+// export const Routes3 = [{
+//     method: "get",
+//     route: "/siki",
+//     controller: PostController,
+//     action: "all"
+//  }, {
+//     method: "get",
+//     route: "/users/:id",
+
+//     controller: PostController,
+//     action: "one"
+//  }, {
+//     method: "post",
+//     route: "/users",
+//     controller: PostController,
+//     action: "save"
+//  }, {
+//     method: "delete", route: "/users/:id", controller: PostController,
+//     action: "remove"
+// }];

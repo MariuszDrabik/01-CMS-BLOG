@@ -13,7 +13,7 @@ export class PostController {
             .orderBy("post.id", "DESC")
         const { elements: posts, paginateInfo } =
             await Pagination.paginate(post, req)
- \
+
         return {
             posts,
             paginateInfo

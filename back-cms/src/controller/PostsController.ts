@@ -1,22 +1,23 @@
 import { NextFunction, Request, Response } from "express";
 import { AppDataSource } from "../database/data-source";
 import { Post } from "../entity/Posts";
+import { Pagination } from "../utils/Pagination";
 
 export class PostController {
 
     private PostRepository = AppDataSource.manager.getRepository(Post)
 
     async all(req: Request, res: Response, next: NextFunction) {
-        const page: number = req.query.page ? Number(req.query.page) : 1
-        const take = 3
-        const posts = this.PostRepository.createQueryBuilder("post")
-            .orderBy("post.id", "DESC")
 
-        // .select(["post.id", "post.title", "post.summary"])
-        // .take(take)
-        // .skip((page - 1) * take )
-        // .getMany()
-        return posts;
+        const post = this.PostRepository.createQueryBuilder("post")
+            .orderBy("post.id", "DESC")
+        const { elements: posts, paginateInfo } =
+            await Pagination.paginate(post, req)
+ \
+        return {
+            posts,
+            paginateInfo
+        };
     }
 
     async one(req: Request, res: Response, next: NextFunction) {

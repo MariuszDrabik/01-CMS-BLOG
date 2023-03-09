@@ -7,9 +7,13 @@ import { PostController } from "../controller/PostsController";
 
 export const postRouter = Router()
 .get('/', async (req: Request, res: Response, next: NextFunction) => {
-
-    const posts = await new PostController().all(req, res, next)
-    res.json(posts)
+    try {
+        const posts = await new PostController().all(req, res, next)
+        res.json(posts)
+    } catch(err) {
+        console.log('What?', err)
+        next(err);
+    }
 })
 
 .get('/search/:name?', async (req: Request, res: Response) => {
@@ -25,55 +29,3 @@ export const postRouter = Router()
 .post('/', async (req, res, next) => {
     res.json(req.body)
 })
-
-const authentication = (req: Request, res: Response, next: Function) => {
-    console.log(req);
-    next();
-    return
-    res.json({
-        message: 'You have shall not pass'
-    })
-};
-
-// export const Routes2 = [{
-//     method: "get",
-//     route: "/users",
-//     controller: PostController,
-//     action: "all"
-// }, {
-//     method: "get",
-//     route: "/users/:id",
-//     controller: PostController,
-//     action: "one"
-// }, {
-//     method: "post",
-//     route: "/users",
-//     auth: authentication,
-//     controller: PostController,
-//     action: "save"
-// }, {
-//     method: "delete", route: "/users/:id", controller: PostController,
-//     auth: authentication,
-//     action: "remove"
-// }];
-
-// export const Routes3 = [{
-//     method: "get",
-//     route: "/siki",
-//     controller: PostController,
-//     action: "all"
-//  }, {
-//     method: "get",
-//     route: "/users/:id",
-
-//     controller: PostController,
-//     action: "one"
-//  }, {
-//     method: "post",
-//     route: "/users",
-//     controller: PostController,
-//     action: "save"
-//  }, {
-//     method: "delete", route: "/users/:id", controller: PostController,
-//     action: "remove"
-// }];

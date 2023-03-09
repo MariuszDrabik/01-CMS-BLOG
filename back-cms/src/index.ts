@@ -5,6 +5,7 @@ import { rateLimit } from 'express-rate-limit';
 import { AppDataSource } from './database/data-source';
 import { postRouter } from './routes/post.router';
 import bodyParser from 'body-parser';
+import { handleError } from './utils/errors';
 require('dotenv').config({ path: '../.env' })
 const app = express();
 
@@ -49,7 +50,7 @@ app.get('/', async (req: Request, res: Response) => {
 
 app.use('/posts', postRouter);
 
-
+app.use(handleError);
 
 app.listen(Number(PORT), '0.0.0.0', () => {
     console.log(`Listening on: ${HOST}:${PORT}`)

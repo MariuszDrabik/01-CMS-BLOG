@@ -9,13 +9,13 @@ export class PostController {
     async all(req: Request, res: Response, next: NextFunction) {
         const page: number = req.query.page ? Number(req.query.page) : 1
         const take = 3
-        const posts = this.PostRepository
-        .createQueryBuilder("post")
-        .select(["post.id", "post.title", "post.summary"])
-        .orderBy("post.id", "DESC")
-        .take(take)
-        .skip((page - 1) * take )
-        .getMany()
+        const posts = this.PostRepository.createQueryBuilder("post")
+            .orderBy("post.id", "DESC")
+
+        // .select(["post.id", "post.title", "post.summary"])
+        // .take(take)
+        // .skip((page - 1) * take )
+        // .getMany()
         return posts;
     }
 

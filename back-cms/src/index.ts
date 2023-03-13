@@ -3,9 +3,10 @@ import cors from 'cors';
 import 'express-async-errors';
 import { rateLimit } from 'express-rate-limit';
 import { AppDataSource } from './database/data-source';
-import { postRouter } from './routes/post.router';
+
 import bodyParser from 'body-parser';
 import { handleError } from './utils/errors';
+import { opinionRouter } from './routes/opinion.router';
 require('dotenv').config({ path: '../.env' })
 const app = express();
 
@@ -18,7 +19,6 @@ AppDataSource
     .initialize()
     .then(() => {
         console.log("Data Source has been initialized!")
-
     })
     .catch((err) => {
         console.error("Error during Data Source initialization:", err)
@@ -31,16 +31,13 @@ const limiter = rateLimit({
     legacyHeaders: false,
 });
 app.use(limiter);
-
 app.use(cors({
     origin: 'http://localhost:3000'
 }));
 
-
 app.disable('x-powered-by');
 app.use(json());
 app.use(urlencoded({ extended: true }));
-
 
 app.get('/', async (req: Request, res: Response) => {
     res.json([{
@@ -48,8 +45,7 @@ app.get('/', async (req: Request, res: Response) => {
     }])
 });
 
-app.use('/posts', postRouter);
-
+app.use('/opinions', opinionRouter);
 app.use(handleError);
 
 app.listen(Number(PORT), '0.0.0.0', () => {

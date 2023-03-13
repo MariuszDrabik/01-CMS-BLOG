@@ -9,9 +9,4 @@ export class Tag extends BaseEntity {
     @Column()
     title: string
 
-    @Column()
-    summary: string
-
-    @Column()
-    body: string
 }

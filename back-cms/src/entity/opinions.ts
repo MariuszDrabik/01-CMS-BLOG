@@ -1,7 +1,7 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from "typeorm"
 
 @Entity()
-export class Post extends BaseEntity {
+export class Opinion extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string
 
@@ -13,19 +13,10 @@ export class Post extends BaseEntity {
 
     @Column()
     body: string
-}
-
-@Entity()
-export class Tag extends BaseEntity {
-    @PrimaryGeneratedColumn('uuid')
-    id: string
 
     @Column()
-    title: string
+    rating: number
 
     @Column()
-    summary: string
-
-    @Column()
-    body: string
+    url: string
 }

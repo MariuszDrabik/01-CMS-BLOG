@@ -1,21 +1,24 @@
 import { NextFunction, Request, Response } from "express";
 import { AppDataSource } from "../database/data-source";
-import { Post } from "../entity/Posts";
-import { Pagination } from "../utils/Pagination";
+import { Opinion } from "../entity/opinions";
+import { Pagination } from "../utils/pagination";
 
-export class PostController {
+export class OpinionController {
 
-    private PostRepository = AppDataSource.manager.getRepository(Post)
+    private OpinionRepository = AppDataSource.manager.getRepository(Opinion)
 
     async all(req: Request, res: Response, next: NextFunction) {
 
-        const post = this.PostRepository.createQueryBuilder("post")
-            .orderBy("post.id", "DESC")
-        const { elements: posts, paginateInfo } =
-            await Pagination.paginate(post, req)
+        const opinion = this.OpinionRepository.createQueryBuilder("opinion")
+        .orderBy("opinion.id", "DESC")
+        .select("opinion.id")
+        // .getMany()
+        const { elements: elements, paginateInfo } =
+        await Pagination.paginate(opinion, req)
 
+        // console.log(post);
         return {
-            posts,
+            opinion: elements,
             paginateInfo
         };
     }
@@ -25,7 +28,7 @@ export class PostController {
     }
 
     async save(req: Request, res: Response, next: NextFunction) {
-        return this.PostRepository.save(req.body);
+        return this.OpinionRepository.save(req.body);
     }
 
     async remove(request: Request, response: Response, next: NextFunction) {

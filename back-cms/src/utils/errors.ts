@@ -23,7 +23,7 @@ export function handleError(err: Error, req: Request, res: Response, next: NextF
     if (err.name === 'TypeError' || err.name === 'Error') {
         res.status(500);
         res.json({
-            error: 'Hutson we got problem',
+            error: 'Houston we have a problem',
         });
         return
     }

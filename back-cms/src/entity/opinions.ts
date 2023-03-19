@@ -1,4 +1,5 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, JoinTable, ManyToMany } from "typeorm"
+import { Tag } from "./tags"
 
 @Entity()
 export class Opinion extends BaseEntity {
@@ -19,4 +20,8 @@ export class Opinion extends BaseEntity {
 
     @Column()
     url: string
-}
+
+    @ManyToMany(type => Tag) @JoinTable()
+    tags: Tag[];
+ }
+

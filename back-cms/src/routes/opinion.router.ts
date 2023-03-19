@@ -16,14 +16,13 @@ export const opinionRouter = Router()
     }
 })
 
-.get('/search/:name?', async (req: Request, res: Response) => {
-    const {name} = req.params
-    const posts = await AppDataSource.manager.find(Opinion)
-    res.json(posts)
+.get('/search/:name?', async (req: Request, res: Response, next: NextFunction) => {
+    console.log('what?')
 })
 
-.get('/:id',async (req: Request, res: Response) => {
-
+.get('/:id',async (req: Request, res: Response, next: NextFunction) => {
+    const opinion = await new OpinionController().one(req, res, next)
+    res.json(opinion)
 })
 
 .post('/', async (req, res, next) => {
